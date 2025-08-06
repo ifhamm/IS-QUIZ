@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="./index.css" media="all">
+    <title>SwiftQ - Aplikasi Kuis Terpadu</title>
+</head>
+
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+
+    <header class="absolute top-0 left-0 right-0 z-20">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">
+                SwiftQ
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="loginNavBtn" class="text-slate-300 hover:text-white transition-colors duration-300">Login</button>
+                <button id="registerNavBtn" class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300">Register</button>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute inset-0"
+            style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 20px 20px;">
+        </div>
+    </div>
+
+    <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
+        <div class="max-w-4xl mx-auto text-center space-y-12 animate-fade-in">
+
+            <div class="space-y-6">
+                <div
+                    class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-sky-400 to-blue-600 rounded-2xl shadow-lg animate-glow">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <h1
+                    class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
+                    SwiftQ
+                </h1>
+                <p class="text-xl md:text-2xl text-slate-300 font-light">
+                    Aplikasi Manajemen Soal & Kuis Terpadu
+                </p>
+            </div>
+
+            <div
+                class="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 md:p-12 shadow-2xl animate-slide-up">
+                <div class="space-y-6">
+                    <h2 class="text-2xl md:text-3xl font-semibold text-sky-300 mb-6">
+                        Fitur Unggulan Aplikasi
+                    </h2>
+                    <div class="grid md:grid-cols-2 gap-8 text-left">
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4">
+                                <div
+                                    class="flex-shrink-0 w-8 h-8 bg-sky-500/20 rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-200">Upload Soal Mudah</h3>
+                                    <p class="text-sm text-slate-400">Import soal dari berbagai format file dengan
+                                        sistem drag & drop yang intuitif</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div
+                                    class="flex-shrink-0 w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-200">Manajemen Fleksibel</h3>
+                                    <p class="text-sm text-slate-400">Kelola, edit, dan kategorikan soal dengan sistem
+                                        yang terorganisir</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-start space-x-4">
+                                <div
+                                    class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-200">Buat Quiz Instan</h3>
+                                    <p class="text-sm text-slate-400">Generator kuis otomatis dengan pengaturan waktu
+                                        dan tingkat kesulitan</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start space-x-4">
+                                <div
+                                    class="flex-shrink-0 w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-slate-200">Analisis Hasil</h3>
+                                    <p class="text-sm text-slate-400">Laporan detail dan statistik performa untuk
+                                        evaluasi pembelajaran</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6 justify-center items-center animate-slide-up">
+                <button id="getStartedBtn" class="group relative bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white font-semibold py-4 px-8 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-sky-500/25 w-full md:w-auto">
+                    <div class="flex items-center justify-center space-x-3">
+                        <svg class="w-5 h-5 transition-transform group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span class="text-lg">Mulai Sekarang, Gratis!</span>
+                    </div>
+                </button>
+            </div>
+
+            <div class="pt-8 border-t border-slate-800">
+                <p class="text-slate-500 text-sm">
+                    Mulai kelola soal dan buat kuis interaktif dengan mudah
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="authModalOverlay"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300 ease-in-out">
+        <div id="authModal"
+            class="bg-slate-800 border border-slate-700/50 rounded-2xl shadow-2xl w-full max-w-md relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out">
+            <button id="closeAuthModalBtn" class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors z-10">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+
+            <div class="flex border-b border-slate-700">
+                <button id="loginTab" class="flex-1 p-4 font-semibold text-lg transition-colors">Login</button>
+                <button id="registerTab" class="flex-1 p-4 font-semibold text-lg transition-colors">Register</button>
+            </div>
+
+            <div class="p-8">
+                <form id="loginForm" class="space-y-6">
+                    <div id="loginError" class="hidden text-red-400 text-sm text-center -my-2"></div>
+                    <div>
+                        <label for="loginEmail" class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                        <input type="email" id="loginEmail" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center">
+                            <label for="loginPassword" class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                            <a href="#" class="text-xs text-sky-400 hover:underline">Lupa password?</a>
+                        </div>
+                        <input type="password" id="loginPassword" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 rounded-lg font-semibold transition-all">Login</button>
+                    <p class="text-sm text-center text-slate-400">Belum punya akun?
+                        <button type="button" class="font-semibold text-sky-400 hover:underline switch-to-register">Daftar di sini</button>
+                    </p>
+                </form>
+
+                <form id="registerForm" class="hidden space-y-4">
+                    <div id="registerError" class="hidden text-red-400 text-sm text-center"></div>
+                    <div>
+                        <label for="registerUsername" class="block text-sm font-medium text-slate-300 mb-2">Username</label>
+                        <input type="text" id="registerUsername" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                    </div>
+                    <div>
+                        <label for="registerEmail" class="block text-sm font-medium text-slate-300 mb-2">Email</label>
+                        <input type="email" id="registerEmail" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                    </div>
+                    <div>
+                        <label for="registerPassword" class="block text-sm font-medium text-slate-300 mb-2">Password</label>
+                        <input type="password" id="registerPassword" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500" required>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 rounded-lg font-semibold transition-all">Buat Akun</button>
+                    <p class="text-sm text-center text-slate-400">Sudah punya akun?
+                        <button type="button" class="font-semibold text-sky-400 hover:underline switch-to-login">Login di sini</button>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="../uibuilder/uibuilder.iife.min.js"></script>
+
+<script>
+   
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Elemen UI yang sudah ada ---
+        const loginNavBtn = document.getElementById('loginNavBtn');
+        const registerNavBtn = document.getElementById('registerNavBtn');
+        const getStartedBtn = document.getElementById('getStartedBtn');
+        const authModalOverlay = document.getElementById('authModalOverlay');
+        const authModal = document.getElementById('authModal');
+        const closeAuthModalBtn = document.getElementById('closeAuthModalBtn');
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const switchToRegisterBtn = document.querySelector('.switch-to-register');
+        const switchToLoginBtn = document.querySelector('.switch-to-login');
+
+        const activeTabClasses = 'bg-slate-700 text-white';
+        const inactiveTabClasses = 'bg-transparent text-slate-400 hover:bg-slate-700/50';
+
+        // --- Fungsi Modal dan Tab (tidak berubah) ---
+        const switchTab = (tab) => {
+            if (tab === 'login') {
+                loginTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${activeTabClasses}`;
+                registerTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${inactiveTabClasses}`;
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+            } else {
+                loginTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${inactiveTabClasses}`;
+                registerTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${activeTabClasses}`;
+                loginForm.classList.add('hidden');
+                registerForm.classList.remove('hidden');
+            }
+        };
+
+        const openModal = (defaultTab) => {
+            authModalOverlay.classList.remove('hidden');
+            setTimeout(() => {
+                authModalOverlay.classList.remove('opacity-0');
+                authModal.classList.remove('opacity-0', 'scale-95');
+            }, 10);
+            switchTab(defaultTab);
+        };
+
+        const closeModal = () => {
+            authModalOverlay.classList.add('opacity-0');
+            authModal.classList.add('opacity-0', 'scale-95');
+            setTimeout(() => {
+                authModalOverlay.classList.add('hidden');
+            }, 300);
+        };
+
+        // --- Event Listeners (tidak berubah) ---
+        loginNavBtn.addEventListener('click', () => openModal('login'));
+        registerNavBtn.addEventListener('click', () => openModal('register'));
+        getStartedBtn.addEventListener('click', () => openModal('register'));
+        closeAuthModalBtn.addEventListener('click', closeModal);
+        authModalOverlay.addEventListener('click', (event) => {
+            if (event.target === authModalOverlay) closeModal();
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !authModalOverlay.classList.contains('hidden')) {
+                closeModal();
+            }
+        });
+        loginTab.addEventListener('click', () => switchTab('login'));
+        registerTab.addEventListener('click', () => switchTab('register'));
+        switchToRegisterBtn.addEventListener('click', () => switchTab('register'));
+        switchToLoginBtn.addEventListener('click', () => switchTab('login'));
+
+        // ==================================================
+        // ||               LOGIKA UIBUILDER               ||
+        // ==================================================
+
+        // Menggantikan event listener form login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Mencegah form melakukan submit standar
+            console.log('Login form submitted');
+
+            // Mengambil data dari form login
+            // **PENTING**: Di file HTML Anda, form login menggunakan input 'email'.
+            // Sesuai permintaan, kita akan mengirimkannya sebagai 'username'.
+            // Jika Anda ingin menggunakan email untuk login, ganti `username` menjadi `email` di bawah.
+            const username = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Mengirim data menggunakan uibuilder
+            uibuilder.send({
+                'topic': 'login',
+                'payload': {
+                    'username': username, // Mengirim input email sebagai username
+                    'password': password
+                }
+            });
+
+             // Opsi: Beri feedback atau tutup modal setelah submit
+            alert('Mencoba untuk login...');
+            closeModal();
+        });
+
+        // Menggantikan event listener form registrasi
+        registerForm.addEventListener('submit', (e) => {
+            e.preventDefault(); // Mencegah form melakukan submit standar
+            console.log('Register form submitted');
+
+            // Mengambil data dari form registrasi
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            // Mengirim data menggunakan uibuilder
+            uibuilder.send({
+                'topic': 'register',
+                'payload': {
+                    'username': username,
+                    'email': email,
+                    'password': password
+                },
+                    'sentFromNode': {
+                    'username': username,
+                    'email': email,
+                    'password': password
+                }
+            });
+
+            // Opsi: Beri feedback atau tutup modal setelah submit
+            alert('Mencoba untuk registrasi...');
+            closeModal();
+        });
+
+        // (Opsional) Menangani pesan yang diterima dari Node-RED
+        uibuilder.onChange('msg', (newMsg) => {
+            console.log('Pesan diterima dari Node-RED:', newMsg);
+            // Contoh: Menampilkan notifikasi berdasarkan balasan dari backend
+            if (newMsg.topic === 'login_status' || newMsg.topic === 'register_status') {
+                alert(newMsg.payload.message); // Menampilkan pesan balasan (e.g., "Login berhasil" atau "Username sudah ada")
+            }
+        });
+
+    });
+</script>
+
+</body>
+
+</html>
