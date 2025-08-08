@@ -1,0 +1,26 @@
+[
+    {
+        "id": "80d4051d70543731",
+        "type": "http request",
+        "z": "226d034ba02adc67",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://localhost:3000/api/v1/chatflows",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "bearer",
+        "senderr": false,
+        "headers": [],
+        "x": 2490,
+        "y": 580,
+        "wires": [
+            [
+                "a9db4a42671245c1"
+            ]
+        ]
+    }
+]
