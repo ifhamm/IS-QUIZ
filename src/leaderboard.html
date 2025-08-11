@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="./index.css" media="all">
+    <title>Papan Peringkat - SwiftQ</title>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+
+    <header class="absolute top-0 left-0 right-0 z-20">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">SwiftQ</a>
+            <div><a href="index.html" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300">Kembali</a></div>
+        </nav>
+    </header>
+
+    <main class="relative z-10 flex items-center justify-center min-h-screen p-4 pt-24">
+        <div class="w-full max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">Papan Peringkat</h1>
+            <div id="leaderboard-container" class="mt-10 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl shadow-2xl p-6 md:p-8">
+                <p id="leaderboard-placeholder" class="text-slate-400">Sedang memuat data...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="../uibuilder/uibuilder.iife.min.js"></script>
+    <script>
+        function formatDuration(totalSeconds) {
+            if (isNaN(totalSeconds) || totalSeconds < 0) return "00:00";
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            uibuilder.start();
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const quizId = urlParams.get('id');
+
+            if (!quizId) {
+                document.getElementById('leaderboard-placeholder').textContent = 'Error: ID Kuis tidak ditemukan di URL.';
+                return;
+            }
+
+            uibuilder.send({
+                'topic': 'get_leaderboard_for_quiz',
+                'payload': { 'id': quizId }
+            });
+
+            uibuilder.onChange('msg', (newMsg) => {
+                if (newMsg.topic === 'leaderboard_data') {
+                    const leaderboardContainer = document.getElementById('leaderboard-container');
+                    const placeholder = document.getElementById('leaderboard-placeholder');
+                    let data = newMsg.payload.data;
+
+                    if (data && data.length > 0) {
+                        data.sort((a, b) => {
+                            if (a.score !== b.score) return b.score - a.score;
+                            return a.duration_seconds - b.duration_seconds;
+                        });
+
+                        let tableHTML = `
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="border-b border-slate-600">
+                                        <th class="p-4 w-16 text-slate-400">#</th>
+                                        <th class="p-4 text-slate-400">Nama Pengguna</th>
+                                        <th class="p-4 text-center text-slate-400">Skor</th>
+                                        <th class="p-4 text-center text-slate-400">Waktu</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+
+                        data.forEach((entry, index) => {
+                            const rank = index + 1;
+                            let rankDisplay = rank;
+                            if (rank === 1) rankDisplay = '🥇';
+                            if (rank === 2) rankDisplay = '🥈';
+                            if (rank === 3) rankDisplay = '🥉';
+
+                            tableHTML += `
+                                <tr class="border-b border-slate-700/50 hover:bg-slate-700/30">
+                                    <td class="p-4 w-16 text-xl font-bold text-center">${rankDisplay}</td>
+                                    <td class="p-4 font-semibold text-slate-200">${entry.user_name}</td>
+                                    <td class="p-4 text-center font-bold text-sky-300 text-lg">${entry.score}</td>
+                                    <td class="p-4 text-center text-slate-300">${formatDuration(entry.duration_seconds)}</td>
+                                </tr>
+                            `;
+                        });
+
+                        tableHTML += `
+                                </tbody>
+                            </table>
+                        `;
+                        
+                        leaderboardContainer.innerHTML = tableHTML;
+                    } else {
+                        placeholder.textContent = 'Belum ada data untuk ditampilkan di papan peringkat.';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

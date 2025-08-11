@@ -1,743 +1,1153 @@
 <!DOCTYPE html>
 <html lang="id" class="dark">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="./index.css" media="all">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" rel="stylesheet" href="./index.css" media="all" />
     <title>SwiftQ - Aplikasi Kuis Terpadu</title>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css" rel="stylesheet">
-</head>
+    <link
+      href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@5/dark.css"
+      rel="stylesheet"
+    />
+  </head>
 
-<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
-
+  <body
+    class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen"
+  >
     <header class="absolute top-0 left-0 right-0 z-20">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">
-                SwiftQ
-            </div>
-            <div id="auth-container" class="flex items-center space-x-4">
-                <button id="loginNavBtn"
-                    class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300">Login</button>
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <div
+          class="text-2xl font-bold bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent"
+        >
+          SwiftQ
+        </div>
+        <div id="auth-container" class="flex items-center space-x-4">
+          <button
+            id="loginNavBtn"
+            class="bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300"
+          >
+            Login
+          </button>
 
-                <div id="userNav" class="hidden relative">
-                    <button id="profileDropdownBtn"
-                        class="flex items-center space-x-2 py-2 px-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-all">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                        </svg>
-                        <span id="usernameDisplay" class="text-white font-semibold hidden md:inline-block"></span>
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div id="profileDropdown"
-                        class="absolute right-0 mt-2 w-40 bg-slate-700 border border-slate-600 rounded-lg shadow-lg py-1 z-50 hidden">
-                        <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-slate-600">Profile</a>
-                        <button id="logoutBtn"
-                            class="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-slate-600">Logout</button>
-                    </div>
-                </div>
+          <div id="userNav" class="hidden relative">
+            <button
+              id="profileDropdownBtn"
+              class="flex items-center space-x-2 py-2 px-4 bg-slate-700 hover:bg-slate-600 rounded-lg transition-all"
+            >
+              <svg
+                class="w-6 h-6 text-white"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+                />
+              </svg>
+              <span
+                id="usernameDisplay"
+                class="text-white font-semibold hidden md:inline-block"
+              ></span>
+              <svg
+                class="w-4 h-4 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div
+              id="profileDropdown"
+              class="absolute right-0 mt-2 w-40 bg-slate-700 border border-slate-600 rounded-lg shadow-lg py-1 z-50 hidden"
+            >
+              <a
+                href="#"
+                class="block px-4 py-2 text-sm text-white hover:bg-slate-600"
+                >Profile</a
+              >
+              <button
+                id="logoutBtn"
+                class="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-slate-600"
+              >
+                Logout
+              </button>
             </div>
-        </nav>
+          </div>
+        </div>
+      </nav>
     </header>
 
-
     <div class="absolute inset-0 opacity-5">
-        <div class="absolute inset-0"
-            style="background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 20px 20px;">
-        </div>
+      <div
+        class="absolute inset-0"
+        style="
+          background-image: radial-gradient(
+            circle at 1px 1px,
+            rgba(255, 255, 255, 0.15) 1px,
+            transparent 0
+          );
+          background-size: 20px 20px;
+        "
+      ></div>
     </div>
 
-    <div class="relative z-10 flex items-center justify-center min-h-screen p-4">
-        <div class="max-w-4xl mx-auto text-center space-y-12">
+    <div
+      class="relative z-10 flex items-center justify-center min-h-screen p-4"
+    >
+      <div class="max-w-4xl mx-auto text-center space-y-12">
+        <div class="space-y-6">
+          <div
+            class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-sky-400 to-blue-600 rounded-2xl shadow-lg"
+          >
+            <svg
+              class="w-10 h-10 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+          </div>
+          <h1
+            class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent"
+          >
+            SwiftQ
+          </h1>
+          <p class="text-xl md:text-2xl text-slate-300 font-light">
+            Aplikasi Manajemen Soal & Kuis Terpadu
+          </p>
+        </div>
 
-            <div class="space-y-6">
-                <div
-                    class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-sky-400 to-blue-600 rounded-2xl shadow-lg">
-                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <div
+          class="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 md:p-12 shadow-2xl"
+        >
+          <div class="space-y-6">
+            <h2 class="text-2xl md:text-3xl font-semibold text-sky-300 mb-6">
+              Fitur Unggulan Aplikasi
+            </h2>
+            <div class="grid md:grid-cols-2 gap-8 text-left">
+              <div class="space-y-4">
+                <div class="flex items-start space-x-4">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-sky-500/20 rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-4 h-4 text-sky-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      />
                     </svg>
-                </div>
-                <h1
-                    class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
-                    SwiftQ
-                </h1>
-                <p class="text-xl md:text-2xl text-slate-300 font-light">
-                    Aplikasi Manajemen Soal & Kuis Terpadu
-                </p>
-            </div>
-
-            <div class="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 md:p-12 shadow-2xl">
-                <div class="space-y-6">
-                    <h2 class="text-2xl md:text-3xl font-semibold text-sky-300 mb-6">
-                        Fitur Unggulan Aplikasi
-                    </h2>
-                    <div class="grid md:grid-cols-2 gap-8 text-left">
-                        <div class="space-y-4">
-                            <div class="flex items-start space-x-4">
-                                <div
-                                    class="flex-shrink-0 w-8 h-8 bg-sky-500/20 rounded-lg flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-sky-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold text-slate-200">Upload Soal Mudah</h3>
-                                    <p class="text-sm text-slate-400">Import soal dari berbagai format file dengan
-                                        sistem drag & drop yang intuitif</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start space-x-4">
-                                <div
-                                    class="flex-shrink-0 w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold text-slate-200">Manajemen Fleksibel</h3>
-                                    <p class="text-sm text-slate-400">Kelola, edit, dan kategorikan soal dengan sistem
-                                        yang terorganisir</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="flex items-start space-x-4">
-                                <div
-                                    class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold text-slate-200">Buat Quiz Instan</h3>
-                                    <p class="text-sm text-slate-400">Generator kuis otomatis dengan pengaturan waktu
-                                        dan tingkat kesulitan</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start space-x-4">
-                                <div
-                                    class="flex-shrink-0 w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center">
-                                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h3 class="font-semibold text-slate-200">Analisis Hasil</h3>
-                                    <p class="text-sm text-slate-400">Laporan detail dan statistik performa untuk
-                                        evaluasi pembelajaran</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pt-8 border-t border-slate-800">
-                <div>
-                    <button id="openQuizModalBtn"
-                        class="px-8 py-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-sky-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center mx-auto">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Buat Quiz Baru
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div id="authModalOverlay"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300 ease-in-out">
-        <div id="authModal"
-            class="bg-slate-800 border border-slate-700/50 rounded-2xl shadow-2xl w-full max-w-md relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out">
-            <button id="closeAuthModalBtn"
-                class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors z-10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-                    </path>
-                </svg>
-            </button>
-
-            <div class="flex border-b border-slate-700">
-                <button id="loginTab" class="flex-1 p-4 font-semibold text-lg transition-colors">Login</button>
-                <button id="registerTab" class="flex-1 p-4 font-semibold text-lg transition-colors">Register</button>
-            </div>
-
-            <div class="p-8">
-                <form id="loginForm" class="space-y-6">
-                    <div id="loginError" class="hidden text-red-400 text-sm text-center -my-2"></div>
-                    <div>
-                        <label for="loginUsername"
-                            class="block text-sm font-medium text-slate-300 mb-2">Username</label>
-                        <input type="username" id="loginUsername"
-                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                            required>
-                    </div>
-                    <div>
-                        <div class="flex justify-between items-center">
-                            <label for="loginPassword"
-                                class="block text-sm font-medium text-slate-300 mb-2">Password</label>
-                        </div>
-                        <input type="password" id="loginPassword"
-                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                            required>
-                    </div>
-                    <button type="submit"
-                        class="w-full py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 rounded-lg font-semibold transition-all">Login</button>
-                    <p class="text-sm text-center text-slate-400">Belum punya akun?
-                        <button type="button"
-                            class="font-semibold text-sky-400 hover:underline switch-to-register">Daftar di
-                            sini</button>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-slate-200">
+                      Upload Soal Mudah
+                    </h3>
+                    <p class="text-sm text-slate-400">
+                      Import soal dari berbagai format file dengan sistem drag &
+                      drop yang intuitif
                     </p>
-                </form>
-
-                <form id="registerForm" class="hidden space-y-4">
-                    <div id="registerError" class="hidden text-red-400 text-sm text-center"></div>
-                    <div>
-                        <label for="registerUsername"
-                            class="block text-sm font-medium text-slate-300 mb-2">Username</label>
-                        <input type="text" id="registerUsername"
-                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                            required>
-                    </div>
-                    <div>
-                        <label for="registerEmail" class="block text-sm font-medium text-slate-300 mb-2">Email</label>
-                        <input type="email" id="registerEmail"
-                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                            required>
-                    </div>
-                    <div>
-                        <label for="registerPassword"
-                            class="block text-sm font-medium text-slate-300 mb-2">Password</label>
-                        <input type="password" id="registerPassword"
-                            class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                            required>
-                    </div>
-                    <button type="submit"
-                        class="w-full py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 rounded-lg font-semibold transition-all">Buat
-                        Akun</button>
-                    <p class="text-sm text-center text-slate-400">Sudah punya akun?
-                        <button type="button" class="font-semibold text-sky-400 hover:underline switch-to-login">Login
-                            di sini</button>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-emerald-500/20 rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-4 h-4 text-emerald-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-slate-200">
+                      Manajemen Fleksibel
+                    </h3>
+                    <p class="text-sm text-slate-400">
+                      Kelola, edit, dan kategorikan soal dengan sistem yang
+                      terorganisir
                     </p>
-                </form>
+                  </div>
+                </div>
+              </div>
+              <div class="space-y-4">
+                <div class="flex items-start space-x-4">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-4 h-4 text-purple-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 10V3L4 14h7v7l9-11h-7z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-slate-200">
+                      Buat Quiz Instan
+                    </h3>
+                    <p class="text-sm text-slate-400">
+                      Generator kuis otomatis dengan pengaturan waktu dan
+                      tingkat kesulitan
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-start space-x-4">
+                  <div
+                    class="flex-shrink-0 w-8 h-8 bg-amber-500/20 rounded-lg flex items-center justify-center"
+                  >
+                    <svg
+                      class="w-4 h-4 text-amber-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold text-slate-200">Analisis Hasil</h3>
+                    <p class="text-sm text-slate-400">
+                      Laporan detail dan statistik performa untuk evaluasi
+                      pembelajaran
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-    <div id="modalLogout"
-        class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
-        <div id="modalLogoutContent"
-            class="bg-slate-800 text-white rounded-xl shadow-xl w-80 p-6 text-center transform scale-95 opacity-0 transition-all duration-300">
-            <div id="modalLogoutIcon" class="text-4xl mb-2">🚪</div>
-            <h2 id="modalLogoutTitle" class="text-lg font-semibold mb-2">Yakin Mau Logout?</h2>
-            <p id="modalLogoutMessage" class="text-sm text-gray-300 mb-6">Anda akan keluar dari sesi sekarang.</p>
-            <div class="flex justify-center gap-3">
-                <button id="modalLogoutCancel"
-                    class="px-4 py-2 rounded-md bg-slate-600 text-white hover:bg-slate-500 transition-all">Batal</button>
-                <button id="modalLogoutConfirm"
-                    class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition-all">Ya,
-                    Logout</button>
-            </div>
-        </div>
-    </div>
 
-    <div id="createQuizModalOverlay"
-        class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300 ease-in-out">
-        <div id="createQuizModal"
-            class="bg-slate-800 border border-slate-700/50 rounded-xl shadow-2xl w-full max-w-md relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out p-6">
-
-            <button id="closeQuizModalBtn"
-                class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors z-10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
+        <div class="pt-8 border-t border-slate-800">
+          <div>
+            <button
+              id="openQuizModalBtn"
+              class="px-8 py-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white rounded-xl font-semibold shadow-lg hover:shadow-sky-500/30 transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center mx-auto"
+            >
+              <svg
+                class="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                ></path>
+              </svg>
+              Buat Quiz Baru
             </button>
-
-            <h2 class="text-xl font-semibold text-sky-300 mb-4 text-center">Buat Quiz Baru</h2>
-
-            <form id="createQuizForm" class="space-y-4">
-                <div id="quizFormStatus" class="hidden text-sm text-center p-3 rounded-lg"></div>
-
-                <div>
-                    <label for="quizName" class="block text-sm font-medium text-slate-300 mb-1">Nama Quiz</label>
-                    <input type="text" id="quizName" name="quizName"
-                        class="w-full bg-slate-700 border border-slate-600 rounded-md px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                        placeholder="Contoh: Ujian Akhir Semester" required>
-                </div>
-
-                <div>
-                    <label for="quizCategory" class="block text-sm font-medium text-slate-300 mb-1">Kategori</label>
-                    <input type="text" id="quizCategory" name="quizCategory"
-                        class="w-full bg-slate-700 border border-slate-600 rounded-md px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                        placeholder="Contoh: Bahasa Indonesia" required>
-                </div>
-
-                <div>
-                    <label for="quizNumQuestions" class="block text-sm font-medium text-slate-300 mb-1">Jumlah Soal</label>
-                    <input type="number" id="quizNumQuestions" name="quizNumQuestions"
-                        class="w-full bg-slate-700 border border-slate-600 rounded-md px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
-                        placeholder="Contoh: 20" min="1" required>
-                </div>
-
-                <div>
-                    <label class="block text-base font-medium text-slate-200 mb-2">
-                        Upload File Soal (.txt, .json, .csv)
-                    </label>
-                    <label for="quizFile"
-                        class="flex justify-center items-center h-32 w-full px-4 transition bg-slate-700 border-2 border-slate-600 border-dashed rounded-md appearance-none cursor-pointer hover:border-sky-500 focus:outline-none">
-                        <span class="flex items-center space-x-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-400" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                            </svg>
-                            <span id="quizFileName" class="font-semibold text-slate-300 text-base">
-                                Klik untuk pilih file
-                            </span>
-                        </span>
-                        <input type="file" id="quizFile" name="quizFile" class="hidden" accept=".txt,.json,.csv"
-                            required>
-                    </label>
-                </div>
-
-                <div class="flex items-center justify-end space-x-3 pt-3">
-                    <button type="button" id="cancelQuizModalBtn"
-                        class="py-2 px-4 bg-slate-600 hover:bg-slate-500 rounded-md font-medium text-sm transition-all">
-                        Batal
-                    </button>
-                    <button type="submit"
-                        class="py-2 px-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 rounded-md font-medium text-sm transition-all">
-                        Buat & Upload
-                    </button>
-                </div>
-            </form>
+          </div>
         </div>
+    <div id="quiz-list-container" class="w-full max-w-6xl mx-auto pt-16 pb-24 px-4 space-y-12 border-t border-slate-700/50">
+      <h2
+        class="text-4xl md:text-5xl font-extrabold text-center bg-gradient-to-r from-sky-300 to-cyan-400 bg-clip-text text-transparent">
+        Daftar Kuis Tersedia
+      </h2>
+
+      <div id="quiz-list-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      </div>
+
+      <div id="quiz-list-placeholder" class="text-slate-400 text-center py-8">
+        <div class="flex items-center justify-center space-x-3">
+          <svg class="animate-spin h-6 w-6 text-sky-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+            </path>
+          </svg>
+          <span>Sedang memuat daftar kuis...</span>
+        </div>
+      </div>
+    </div>
+      </div>
+    </div>
+
+    <div
+      id="authModalOverlay"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300 ease-in-out"
+    >
+      <div
+        id="authModal"
+        class="bg-slate-800 border border-slate-700/50 rounded-2xl shadow-2xl w-full max-w-md relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out"
+      >
+        <button
+          id="closeAuthModalBtn"
+          class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors z-10"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+
+        <div class="flex border-b border-slate-700">
+          <button
+            id="loginTab"
+            class="flex-1 p-4 font-semibold text-lg transition-colors"
+          >
+            Login
+          </button>
+          <button
+            id="registerTab"
+            class="flex-1 p-4 font-semibold text-lg transition-colors"
+          >
+            Register
+          </button>
+        </div>
+
+        <div class="p-8">
+          <form id="loginForm" class="space-y-6">
+            <div
+              id="loginError"
+              class="hidden text-red-400 text-sm text-center -my-2"
+            ></div>
+            <div>
+              <label
+                for="loginUsername"
+                class="block text-sm font-medium text-slate-300 mb-2"
+                >Username</label
+              >
+              <input
+                type="username"
+                id="loginUsername"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <div>
+              <div class="flex justify-between items-center">
+                <label
+                  for="loginPassword"
+                  class="block text-sm font-medium text-slate-300 mb-2"
+                  >Password</label
+                >
+              </div>
+              <input
+                type="password"
+                id="loginPassword"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 rounded-lg font-semibold transition-all"
+            >
+              Login
+            </button>
+            <p class="text-sm text-center text-slate-400">
+              Belum punya akun?
+              <button
+                type="button"
+                class="font-semibold text-sky-400 hover:underline switch-to-register"
+              >
+                Daftar di sini
+              </button>
+            </p>
+          </form>
+
+          <form id="registerForm" class="hidden space-y-4">
+            <div
+              id="registerError"
+              class="hidden text-red-400 text-sm text-center"
+            ></div>
+            <div>
+              <label
+                for="registerUsername"
+                class="block text-sm font-medium text-slate-300 mb-2"
+                >Username</label
+              >
+              <input
+                type="text"
+                id="registerUsername"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <div>
+              <label
+                for="registerEmail"
+                class="block text-sm font-medium text-slate-300 mb-2"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="registerEmail"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <div>
+              <label
+                for="registerPassword"
+                class="block text-sm font-medium text-slate-300 mb-2"
+                >Password</label
+              >
+              <input
+                type="password"
+                id="registerPassword"
+                class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2.5 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              class="w-full py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 rounded-lg font-semibold transition-all"
+            >
+              Buat Akun
+            </button>
+            <p class="text-sm text-center text-slate-400">
+              Sudah punya akun?
+              <button
+                type="button"
+                class="font-semibold text-sky-400 hover:underline switch-to-login"
+              >
+                Login di sini
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div
+      id="modalLogout"
+      class="fixed inset-0 z-50 hidden bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center"
+    >
+      <div
+        id="modalLogoutContent"
+        class="bg-slate-800 text-white rounded-xl shadow-xl w-80 p-6 text-center transform scale-95 opacity-0 transition-all duration-300"
+      >
+        <div id="modalLogoutIcon" class="text-4xl mb-2">🚪</div>
+        <h2 id="modalLogoutTitle" class="text-lg font-semibold mb-2">
+          Yakin Mau Logout?
+        </h2>
+        <p id="modalLogoutMessage" class="text-sm text-gray-300 mb-6">
+          Anda akan keluar dari sesi sekarang.
+        </p>
+        <div class="flex justify-center gap-3">
+          <button
+            id="modalLogoutCancel"
+            class="px-4 py-2 rounded-md bg-slate-600 text-white hover:bg-slate-500 transition-all"
+          >
+            Batal
+          </button>
+          <button
+            id="modalLogoutConfirm"
+            class="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 transition-all"
+          >
+            Ya, Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="createQuizModalOverlay"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300 ease-in-out"
+    >
+      <div
+        id="createQuizModal"
+        class="bg-slate-800 border border-slate-700/50 rounded-xl shadow-2xl w-full max-w-md relative transform scale-95 opacity-0 transition-all duration-300 ease-in-out p-6"
+      >
+        <button
+          id="closeQuizModalBtn"
+          class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors z-10"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        <h2 class="text-xl font-semibold text-sky-300 mb-4 text-center">
+          Buat Quiz Baru
+        </h2>
+
+        <form id="createQuizForm" class="space-y-4">
+          <div
+            id="quizFormStatus"
+            class="hidden text-sm text-center p-3 rounded-lg"
+          ></div>
+
+          <div>
+            <label
+              for="quizName"
+              class="block text-sm font-medium text-slate-300 mb-1"
+              >Nama Quiz</label
+            >
+            <input
+              type="text"
+              id="quizName"
+              name="quizName"
+              class="w-full bg-slate-700 border border-slate-600 rounded-md px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              placeholder="Contoh: Ujian Akhir Semester"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              for="quizCategory"
+              class="block text-sm font-medium text-slate-300 mb-1"
+              >Kategori</label
+            >
+            <input
+              type="text"
+              id="quizCategory"
+              name="quizCategory"
+              class="w-full bg-slate-700 border border-slate-600 rounded-md px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              placeholder="Contoh: Bahasa Indonesia"
+              required
+            />
+          </div>
+
+          <div>
+            <label
+              for="quizNumQuestions"
+              class="block text-sm font-medium text-slate-300 mb-1"
+              >Jumlah Soal</label
+            >
+            <input
+              type="number"
+              id="quizNumQuestions"
+              name="quizNumQuestions"
+              class="w-full bg-slate-700 border border-slate-600 rounded-md px-3 py-2 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              placeholder="Contoh: 20"
+              min="1"
+              required
+            />
+          </div>
+
+          <div>
+            <label class="block text-base font-medium text-slate-200 mb-2">
+              Upload File Soal (.pdf, .docx, .txt)
+            </label>
+            <label
+              for="quizFile"
+              class="flex justify-center items-center h-32 w-full px-4 transition bg-slate-700 border-2 border-slate-600 border-dashed rounded-md appearance-none cursor-pointer hover:border-sky-500 focus:outline-none"
+            >
+              <span class="flex items-center space-x-3">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="w-6 h-6 text-slate-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                  />
+                </svg>
+                <span
+                  id="quizFileName"
+                  class="font-semibold text-slate-300 text-base"
+                >
+                  Klik untuk pilih file
+                </span>
+              </span>
+              <input
+                type="file"
+                id="quizFile"
+                name="quizFile"
+                class="hidden"
+                accept=".pdf,.docx,.txt"
+                required
+              />
+            </label>
+          </div>
+
+          <div class="flex items-center justify-end space-x-3 pt-3">
+            <button
+              type="button"
+              id="cancelQuizModalBtn"
+              class="py-2 px-4 bg-slate-600 hover:bg-slate-500 rounded-md font-medium text-sm transition-all"
+            >
+              Batal
+            </button>
+            <button
+              type="submit"
+              class="py-2 px-4 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 rounded-md font-medium text-sm transition-all"
+            >
+              Buat & Upload
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <script src="../uibuilder/uibuilder.iife.min.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginNavBtn = document.getElementById('loginNavBtn');
-            const authModalOverlay = document.getElementById('authModalOverlay');
-            const authModal = document.getElementById('authModal');
-            const closeAuthModalBtn = document.getElementById('closeAuthModalBtn');
-            const loginTab = document.getElementById('loginTab');
-            const registerTab = document.getElementById('registerTab');
-            const switchToRegisterBtn = document.querySelector('.switch-to-register');
-            const switchToLoginBtn = document.querySelector('.switch-to-login');
+      document.addEventListener("DOMContentLoaded", () => {
+        const loginNavBtn = document.getElementById("loginNavBtn");
+        const authModalOverlay = document.getElementById("authModalOverlay");
+        const authModal = document.getElementById("authModal");
+        const closeAuthModalBtn = document.getElementById("closeAuthModalBtn");
+        const loginTab = document.getElementById("loginTab");
+        const registerTab = document.getElementById("registerTab");
+        const switchToRegisterBtn = document.querySelector(
+          ".switch-to-register"
+        );
+        const switchToLoginBtn = document.querySelector(".switch-to-login");
+        function getQuizzes() {
+          uibuilder.send({ topic: "get_all_quizzes" });
+        }
+        // Forms
+        const loginForm = document.getElementById("loginForm");
+        const registerForm = document.getElementById("registerForm");
 
-            // Forms
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
+        // Tempat menampilkan error
+        const loginErrorDiv = document.getElementById("loginError");
+        const registerErrorDiv = document.getElementById("registerError");
 
-            // Tempat menampilkan error
-            const loginErrorDiv = document.getElementById('loginError');
-            const registerErrorDiv = document.getElementById('registerError');
+        const activeTabClasses = "bg-slate-700 text-white";
+        const inactiveTabClasses =
+          "bg-transparent text-slate-400 hover:bg-slate-700/50";
+        const updateNav = () => {
+          const userData = JSON.parse(localStorage.getItem("userData"));
+          const loginNavBtn = document.getElementById("loginNavBtn");
+          const userNav = document.getElementById("userNav");
+          const usernameDisplay = document.getElementById("usernameDisplay");
+          const logoutBtn = document.getElementById("logoutBtn");
 
-            const activeTabClasses = 'bg-slate-700 text-white';
-            const inactiveTabClasses = 'bg-transparent text-slate-400 hover:bg-slate-700/50';
-            const updateNav = () => {
-                const userData = JSON.parse(localStorage.getItem('userData'));
-                const loginNavBtn = document.getElementById('loginNavBtn');
-                const userNav = document.getElementById('userNav');
-                const usernameDisplay = document.getElementById('usernameDisplay');
-                const logoutBtn = document.getElementById('logoutBtn');
+          const modalLogout = document.getElementById("modalLogout");
+          const modalLogoutContent =
+            document.getElementById("modalLogoutContent");
+          const modalLogoutTitle = document.getElementById("modalLogoutTitle");
+          const modalLogoutMessage =
+            document.getElementById("modalLogoutMessage");
+          const modalLogoutIcon = document.getElementById("modalLogoutIcon");
+          const modalLogoutCancel =
+            document.getElementById("modalLogoutCancel");
+          const modalLogoutConfirm =
+            document.getElementById("modalLogoutConfirm");
+          let onLogoutConfirm = null;
 
-                const modalLogout = document.getElementById('modalLogout');
-                const modalLogoutContent = document.getElementById('modalLogoutContent');
-                const modalLogoutTitle = document.getElementById('modalLogoutTitle');
-                const modalLogoutMessage = document.getElementById('modalLogoutMessage');
-                const modalLogoutIcon = document.getElementById('modalLogoutIcon');
-                const modalLogoutCancel = document.getElementById('modalLogoutCancel');
-                const modalLogoutConfirm = document.getElementById('modalLogoutConfirm');
-                let onLogoutConfirm = null;
+          const openQuizModalBtn = document.getElementById("openQuizModalBtn");
+          const createQuizModalOverlay = document.getElementById(
+            "createQuizModalOverlay"
+          );
+          const createQuizModal = document.getElementById("createQuizModal");
+          const closeQuizModalBtn =
+            document.getElementById("closeQuizModalBtn");
+          const cancelQuizModalBtn =
+            document.getElementById("cancelQuizModalBtn");
 
-                const openQuizModalBtn = document.getElementById('openQuizModalBtn');
-                const createQuizModalOverlay = document.getElementById('createQuizModalOverlay');
-                const createQuizModal = document.getElementById('createQuizModal');
-                const closeQuizModalBtn = document.getElementById('closeQuizModalBtn');
-                const cancelQuizModalBtn = document.getElementById('cancelQuizModalBtn');
+          // Elemen form
+          const createQuizForm = document.getElementById("createQuizForm");
+          const quizFileInput = document.getElementById("quizFile");
+          const quizFileNameSpan = document.getElementById("quizFileName");
+          const quizFormStatus = document.getElementById("quizFormStatus");
+          // Fungsi untuk membuka dan menutup modal quiz
+          const openCreateQuizModal = () => {
+            // Reset form setiap kali modal dibuka
+            createQuizForm.reset();
+            quizFileNameSpan.textContent = "Klik untuk pilih file";
+            quizFormStatus.classList.add("hidden");
 
-                // Elemen form
-                const createQuizForm = document.getElementById('createQuizForm');
-                const quizFileInput = document.getElementById('quizFile');
-                const quizFileNameSpan = document.getElementById('quizFileName');
-                const quizFormStatus = document.getElementById('quizFormStatus');
-                // Fungsi untuk membuka dan menutup modal quiz
-                const openCreateQuizModal = () => {
-                    // Reset form setiap kali modal dibuka
-                    createQuizForm.reset();
-                    quizFileNameSpan.textContent = 'Klik untuk pilih file';
-                    quizFormStatus.classList.add('hidden');
+            createQuizModalOverlay.classList.remove("hidden");
+            setTimeout(() => {
+              createQuizModalOverlay.classList.remove("opacity-0");
+              createQuizModal.classList.remove("opacity-0", "scale-95");
+            }, 10);
+          };
 
-                    createQuizModalOverlay.classList.remove('hidden');
-                    setTimeout(() => {
-                        createQuizModalOverlay.classList.remove('opacity-0');
-                        createQuizModal.classList.remove('opacity-0', 'scale-95');
-                    }, 10);
-                };
+          const closeCreateQuizModal = () => {
+            createQuizModalOverlay.classList.add("opacity-0");
+            createQuizModal.classList.add("opacity-0", "scale-95");
+            setTimeout(() => {
+              createQuizModalOverlay.classList.add("hidden");
+            }, 300);
+          };
 
-                const closeCreateQuizModal = () => {
-                    createQuizModalOverlay.classList.add('opacity-0');
-                    createQuizModal.classList.add('opacity-0', 'scale-95');
-                    setTimeout(() => {
-                        createQuizModalOverlay.classList.add('hidden');
-                    }, 300);
-                };
+          // [PERUBAHAN 2] Modifikasi event listener tombol 'Buat Quiz Baru'
+          openQuizModalBtn.addEventListener("click", () => {
+            const isLoggedIn = JSON.parse(localStorage.getItem("userData"));
 
-                // [PERUBAHAN 2] Modifikasi event listener tombol 'Buat Quiz Baru'
-                openQuizModalBtn.addEventListener('click', () => {
-                    const isLoggedIn = JSON.parse(localStorage.getItem('userData'));
+            if (isLoggedIn) {
+              // Jika sudah login, buka modal buat quiz
+              openCreateQuizModal();
+            } else {
+              // Jika belum login, tampilkan SweetAlert
+              Swal.fire({
+                title: "Anda Belum Login!",
+                text: "Untuk membuat quiz baru, Anda harus login terlebih dahulu.",
+                icon: "warning",
+                confirmButtonText: "Login Sekarang",
+                confirmButtonColor: "#0ea5e9", // Warna sky-500
+                showCancelButton: true,
+                cancelButtonText: "Batal",
+                reverseButtons: true,
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // Jika user klik "Login Sekarang", buka modal login
+                  openModal("login");
+                }
+              });
+            }
+          });
 
-                    if (isLoggedIn) {
-                        // Jika sudah login, buka modal buat quiz
-                        openCreateQuizModal();
-                    } else {
-                        // Jika belum login, tampilkan SweetAlert
-                        Swal.fire({
-                            title: 'Anda Belum Login!',
-                            text: "Untuk membuat quiz baru, Anda harus login terlebih dahulu.",
-                            icon: 'warning',
-                            confirmButtonText: 'Login Sekarang',
-                            confirmButtonColor: '#0ea5e9', // Warna sky-500
-                            showCancelButton: true,
-                            cancelButtonText: 'Batal',
-                            reverseButtons: true
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // Jika user klik "Login Sekarang", buka modal login
-                                openModal('login');
-                            }
-                        });
-                    }
+          closeQuizModalBtn.addEventListener("click", closeCreateQuizModal);
+          cancelQuizModalBtn.addEventListener("click", closeCreateQuizModal);
+
+          // Tutup modal jika klik di luar area konten
+          createQuizModalOverlay.addEventListener("click", (event) => {
+            if (event.target === createQuizModalOverlay) {
+              closeCreateQuizModal();
+            }
+          });
+          // Tutup modal dengan tombol 'Escape'
+          document.addEventListener("keydown", (event) => {
+            if (
+              event.key === "Escape" &&
+              !createQuizModalOverlay.classList.contains("hidden")
+            ) {
+              closeCreateQuizModal();
+            }
+          });
+          // Logika untuk menampilkan nama file yang dipilih
+          quizFileInput.addEventListener("change", () => {
+            if (quizFileInput.files.length > 0) {
+              quizFileNameSpan.textContent = quizFileInput.files[0].name;
+            } else {
+              quizFileNameSpan.textContent = "Klik untuk pilih file";
+            }
+          });
+
+          // ======================================================================
+          // || KODE YANG DIMODIFIKASI ADA DI BLOK INI                             ||
+          // ======================================================================
+          createQuizForm.addEventListener("submit", (e) => {
+            // 1. Mencegah halaman me-reload saat form disubmit
+            e.preventDefault();
+
+            // 2. Mengambil semua nilai dari elemen form di HTML
+            const quizName = document.getElementById("quizName").value;
+            const quizCategory = document.getElementById("quizCategory").value;
+            const quizNumQuestions =
+              document.getElementById("quizNumQuestions").value;
+            const file = quizFileInput.files[0];
+
+            // 3. Mengambil data pengguna dari localStorage untuk mendapatkan userId
+            const userData = JSON.parse(localStorage.getItem("userData"));
+
+            // 4. Validasi: Pastikan pengguna sudah login sebelum mengirim form
+            if (!userData || !userData.id) {
+              quizFormStatus.textContent =
+                "Sesi tidak valid. Silakan login ulang.";
+              quizFormStatus.className =
+                "text-sm text-center p-3 rounded-lg bg-red-500/20 text-red-400";
+              quizFormStatus.classList.remove("hidden");
+              // Arahkan kembali ke modal login jika sesi tidak ditemukan
+              setTimeout(() => openModal("login"), 2000);
+              return; // Hentikan eksekusi jika tidak login
+            }
+            const userId = userData.id;
+
+            // 5. Validasi: Pastikan file sudah dipilih
+            if (!file) {
+              quizFormStatus.textContent =
+                "Silakan pilih file soal terlebih dahulu.";
+              quizFormStatus.className =
+                "text-sm text-center p-3 rounded-lg bg-red-500/20 text-red-400";
+              quizFormStatus.classList.remove("hidden");
+              return; // Hentikan eksekusi jika file kosong
+            }
+
+            // 6. Beri tahu pengguna bahwa file sedang diproses
+            quizFormStatus.textContent = `Sedang memproses ${file.name}...`;
+            quizFormStatus.className =
+              "text-sm text-center p-3 rounded-lg bg-sky-500/20 text-sky-300";
+            quizFormStatus.classList.remove("hidden");
+
+            // 7. Inisialisasi FileReader untuk membaca konten file
+            const reader = new FileReader();
+
+            // 8. Definisikan apa yang terjadi SETELAH file berhasil dibaca
+            reader.onload = (event) => {
+              // Buat objek 'msg' sesuai struktur yang diinginkan
+              const msg = {
+                topic: "create_quiz", // Topic untuk identifikasi di Node-RED
+                userId: userId, // ID dari pengguna yang login
+                quizName: quizName, // Nama kuis dari input form
+                quizCategory: quizCategory, // Kategori kuis dari input form
+                quizNumber: parseInt(quizNumQuestions, 10), // Jumlah soal (diubah ke tipe angka)
+                fileName: file.name, // Nama file yang di-upload
+                fileData: event.target.result, // Data file dalam bentuk ArrayBuffer
+              };
+
+              // Kirim objek 'msg' ke Node-RED melalui uibuilder
+              uibuilder.send(msg);
+              console.log("Mengirim data quiz ke Node-RED:", msg);
+
+              // Beri feedback ke pengguna bahwa proses berhasil
+              quizFormStatus.textContent =
+                "File berhasil diproses dan dikirim!";
+              quizFormStatus.className =
+                "text-sm text-center p-3 rounded-lg bg-green-500/20 text-green-400";
+            };
+
+            // 9. Definisikan apa yang terjadi JIKA ada kesalahan saat membaca file
+            reader.onerror = (error) => {
+              console.error("Error reading file:", error);
+              quizFormStatus.textContent =
+                "Gagal membaca file. Silakan coba lagi.";
+              quizFormStatus.className =
+                "text-sm text-center p-3 rounded-lg bg-red-500/20 text-red-400";
+            };
+
+            // 10. Mulai proses pembacaan file. Ini akan memicu 'onload' atau 'onerror'
+            reader.readAsArrayBuffer(file);
+          });
+          // ======================================================================
+          // || AKHIR DARI BLOK KODE YANG DIMODIFIKASI                             ||
+          // ======================================================================
+
+          function closeLogoutModal() {
+            modalLogoutContent.classList.add("opacity-0", "scale-95");
+            setTimeout(() => {
+              modalLogout.classList.add("hidden");
+            }, 300);
+          }
+
+          modalLogoutCancel.addEventListener("click", closeLogoutModal);
+          modalLogout.addEventListener("click", (e) => {
+            if (e.target === modalLogout) closeLogoutModal();
+          });
+          modalLogoutConfirm.addEventListener("click", () => {
+            if (typeof onLogoutConfirm === "function") onLogoutConfirm();
+            closeLogoutModal();
+          });
+          window.showLogoutModal = ({
+            title = "Yakin Mau Logout?",
+            message = "Anda akan keluar dari sesi sekarang.",
+            icon = "🚪",
+            confirmText = "Ya, Logout",
+            cancelText = "Batal",
+            onConfirm = null,
+          } = {}) => {
+            modalLogoutTitle.textContent = title;
+            modalLogoutMessage.textContent = message;
+            modalLogoutIcon.textContent = icon;
+            modalLogoutConfirm.textContent = confirmText;
+            modalLogoutCancel.textContent = cancelText;
+            onLogoutConfirm = onConfirm;
+
+            modalLogout.classList.remove("hidden");
+            setTimeout(() => {
+              modalLogoutContent.classList.remove("opacity-0", "scale-95");
+            }, 10);
+          };
+
+          if (userData) {
+            // Jika ada data user (sudah login)
+            loginNavBtn.style.display = "none";
+            userNav.style.display = "flex";
+
+            document
+              .getElementById("logoutBtn")
+              .addEventListener("click", () => {
+                showLogoutModal({
+                  onConfirm: () => {
+                    localStorage.removeItem("userData");
+                    window.location.reload();
+                  },
                 });
-
-                closeQuizModalBtn.addEventListener('click', closeCreateQuizModal);
-                cancelQuizModalBtn.addEventListener('click', closeCreateQuizModal);
-
-                // Tutup modal jika klik di luar area konten
-                createQuizModalOverlay.addEventListener('click', (event) => {
-                    if (event.target === createQuizModalOverlay) {
-                        closeCreateQuizModal();
-                    }
-                });
-                // Tutup modal dengan tombol 'Escape'
-                document.addEventListener('keydown', (event) => {
-                    if (event.key === 'Escape' && !createQuizModalOverlay.classList.contains('hidden')) {
-                        closeCreateQuizModal();
-                    }
-                });
-                // Logika untuk menampilkan nama file yang dipilih
-                quizFileInput.addEventListener('change', () => {
-                    if (quizFileInput.files.length > 0) {
-                        quizFileNameSpan.textContent = quizFileInput.files[0].name;
-                    } else {
-                        quizFileNameSpan.textContent = 'Klik untuk pilih file';
-                    }
-                });
-
-                // ======================================================================
-                // || KODE YANG DIMODIFIKASI ADA DI BLOK INI                             ||
-                // ======================================================================
-                createQuizForm.addEventListener('submit', (e) => {
-    // 1. Mencegah halaman me-reload saat form disubmit
-    e.preventDefault();
-
-    // 2. Mengambil semua nilai dari elemen form di HTML
-    const quizName = document.getElementById('quizName').value;
-    const quizCategory = document.getElementById('quizCategory').value;
-    const quizNumQuestions = document.getElementById('quizNumQuestions').value;
-    const file = quizFileInput.files[0];
-
-    // 3. Mengambil data pengguna dari localStorage untuk mendapatkan userId
-    const userData = JSON.parse(localStorage.getItem('userData'));
-
-    // 4. Validasi: Pastikan pengguna sudah login sebelum mengirim form
-    if (!userData || !userData.id) {
-        quizFormStatus.textContent = 'Sesi tidak valid. Silakan login ulang.';
-        quizFormStatus.className = 'text-sm text-center p-3 rounded-lg bg-red-500/20 text-red-400';
-        quizFormStatus.classList.remove('hidden');
-        // Arahkan kembali ke modal login jika sesi tidak ditemukan
-        setTimeout(() => openModal('login'), 2000);
-        return; // Hentikan eksekusi jika tidak login
-    }
-    const userId = userData.id;
-
-    // 5. Validasi: Pastikan file sudah dipilih
-    if (!file) {
-        quizFormStatus.textContent = 'Silakan pilih file soal terlebih dahulu.';
-        quizFormStatus.className = 'text-sm text-center p-3 rounded-lg bg-red-500/20 text-red-400';
-        quizFormStatus.classList.remove('hidden');
-        return; // Hentikan eksekusi jika file kosong
-    }
-
-    // 6. Beri tahu pengguna bahwa file sedang diproses
-    quizFormStatus.textContent = `Sedang memproses ${file.name}...`;
-    quizFormStatus.className = 'text-sm text-center p-3 rounded-lg bg-sky-500/20 text-sky-300';
-    quizFormStatus.classList.remove('hidden');
-
-    // 7. Inisialisasi FileReader untuk membaca konten file
-    const reader = new FileReader();
-
-    // 8. Definisikan apa yang terjadi SETELAH file berhasil dibaca
-    reader.onload = (event) => {
-        // Buat objek 'msg' sesuai struktur yang diinginkan
-        const msg = {
-            topic: 'create_quiz',                     // Topic untuk identifikasi di Node-RED
-            userId: userId,                           // ID dari pengguna yang login
-            quizName: quizName,                       // Nama kuis dari input form
-            quizCategory: quizCategory,               // Kategori kuis dari input form
-            quizNumber: parseInt(quizNumQuestions, 10), // Jumlah soal (diubah ke tipe angka)
-            fileName: file.name,                      // Nama file yang di-upload
-            fileData: event.target.result             // Data file dalam bentuk ArrayBuffer
+              });
+          } else {
+            // Jika tidak ada data user (belum login)
+            loginNavBtn.style.display = "block";
+            userNav.style.display = "none";
+          }
+        };
+        // --- FUNGSI UNTUK MENGELOLA MODAL AUTH ---
+        const resetForms = () => {
+          loginForm.reset();
+          registerForm.reset();
+          loginErrorDiv.classList.add("hidden");
+          registerErrorDiv.classList.add("hidden");
+          registerErrorDiv.classList.remove("text-green-400", "text-green-700");
+          registerErrorDiv.classList.add("text-red-400");
+          loginErrorDiv.classList.remove("text-green-700");
+          loginErrorDiv.classList.add("text-red-400");
         };
 
-        // Kirim objek 'msg' ke Node-RED melalui uibuilder
-        uibuilder.send(msg);
-        console.log('Mengirim data quiz ke Node-RED:', msg);
+        const switchTab = (tab) => {
+          resetForms();
+          if (tab === "login") {
+            loginTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${activeTabClasses}`;
+            registerTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${inactiveTabClasses}`;
+            loginForm.classList.remove("hidden");
+            registerForm.classList.add("hidden");
+          } else {
+            loginTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${inactiveTabClasses}`;
+            registerTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${activeTabClasses}`;
+            loginForm.classList.add("hidden");
+            registerForm.classList.remove("hidden");
+          }
+        };
+        const openModal = (defaultTab) => {
+          authModalOverlay.classList.remove("hidden");
+          setTimeout(() => {
+            authModalOverlay.classList.remove("opacity-0");
+            authModal.classList.remove("opacity-0", "scale-95");
+          }, 10);
+          switchTab(defaultTab);
+        };
 
-        // Beri feedback ke pengguna bahwa proses berhasil
-        quizFormStatus.textContent = 'File berhasil diproses dan dikirim!';
-        quizFormStatus.className = 'text-sm text-center p-3 rounded-lg bg-green-500/20 text-green-400';
-    };
+        const closeModal = () => {
+          authModalOverlay.classList.add("opacity-0");
+          authModal.classList.add("opacity-0", "scale-95");
+          setTimeout(() => {
+            authModalOverlay.classList.add("hidden");
+            resetForms();
+          }, 300);
+        };
 
-    // 9. Definisikan apa yang terjadi JIKA ada kesalahan saat membaca file
-    reader.onerror = (error) => {
-        console.error('Error reading file:', error);
-        quizFormStatus.textContent = 'Gagal membaca file. Silakan coba lagi.';
-        quizFormStatus.className = 'text-sm text-center p-3 rounded-lg bg-red-500/20 text-red-400';
-    };
-
-    // 10. Mulai proses pembacaan file. Ini akan memicu 'onload' atau 'onerror'
-    reader.readAsArrayBuffer(file);
-});
-                // ======================================================================
-                // || AKHIR DARI BLOK KODE YANG DIMODIFIKASI                             ||
-                // ======================================================================
-
-                function closeLogoutModal() {
-                    modalLogoutContent.classList.add('opacity-0', 'scale-95');
-                    setTimeout(() => {
-                        modalLogout.classList.add('hidden');
-                    }, 300);
-                }
-
-                modalLogoutCancel.addEventListener('click', closeLogoutModal);
-                modalLogout.addEventListener('click', e => {
-                    if (e.target === modalLogout) closeLogoutModal();
-                });
-                modalLogoutConfirm.addEventListener('click', () => {
-                    if (typeof onLogoutConfirm === 'function') onLogoutConfirm();
-                    closeLogoutModal();
-                });
-                window.showLogoutModal = ({
-                    title = 'Yakin Mau Logout?',
-                    message = 'Anda akan keluar dari sesi sekarang.',
-                    icon = '🚪',
-                    confirmText = 'Ya, Logout',
-                    cancelText = 'Batal',
-                    onConfirm = null
-                } = {}) => {
-                    modalLogoutTitle.textContent = title;
-                    modalLogoutMessage.textContent = message;
-                    modalLogoutIcon.textContent = icon;
-                    modalLogoutConfirm.textContent = confirmText;
-                    modalLogoutCancel.textContent = cancelText;
-                    onLogoutConfirm = onConfirm;
-
-                    modalLogout.classList.remove('hidden');
-                    setTimeout(() => {
-                        modalLogoutContent.classList.remove('opacity-0', 'scale-95');
-                    }, 10);
-                };
-
-                if (userData) { // Jika ada data user (sudah login)
-                    loginNavBtn.style.display = 'none';
-                    userNav.style.display = 'flex';
-
-                    document.getElementById('logoutBtn').addEventListener('click', () => {
-                        showLogoutModal({
-                            onConfirm: () => {
-                                localStorage.removeItem('userData');
-                                window.location.reload();
-                            }
-                        });
-                    });
-                } else { // Jika tidak ada data user (belum login)
-                    loginNavBtn.style.display = 'block';
-                    userNav.style.display = 'none';
-                }
-            };
-            // --- FUNGSI UNTUK MENGELOLA MODAL AUTH ---
-            const resetForms = () => {
-                loginForm.reset();
-                registerForm.reset();
-                loginErrorDiv.classList.add('hidden');
-                registerErrorDiv.classList.add('hidden');
-                registerErrorDiv.classList.remove('text-green-400', 'text-green-700');
-                registerErrorDiv.classList.add('text-red-400');
-                loginErrorDiv.classList.remove('text-green-700');
-                loginErrorDiv.classList.add('text-red-400');
-
-            };
-
-            const switchTab = (tab) => {
-                resetForms();
-                if (tab === 'login') {
-                    loginTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${activeTabClasses}`;
-                    registerTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${inactiveTabClasses}`;
-                    loginForm.classList.remove('hidden');
-                    registerForm.classList.add('hidden');
-                } else {
-                    loginTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${inactiveTabClasses}`;
-                    registerTab.className = `flex-1 p-4 font-semibold text-lg transition-colors ${activeTabClasses}`;
-                    loginForm.classList.add('hidden');
-                    registerForm.classList.remove('hidden');
-                }
-            };
-            const openModal = (defaultTab) => {
-                authModalOverlay.classList.remove('hidden');
-                setTimeout(() => {
-                    authModalOverlay.classList.remove('opacity-0');
-                    authModal.classList.remove('opacity-0', 'scale-95');
-                }, 10);
-                switchTab(defaultTab);
-            };
-
-            const closeModal = () => {
-                authModalOverlay.classList.add('opacity-0');
-                authModal.classList.add('opacity-0', 'scale-95');
-                setTimeout(() => {
-                    authModalOverlay.classList.add('hidden');
-                    resetForms();
-                }, 300);
-            };
-
-            loginNavBtn.addEventListener('click', () => openModal('login'));
-            closeAuthModalBtn.addEventListener('click', closeModal);
-            authModalOverlay.addEventListener('click', (event) => {
-                if (event.target === authModalOverlay) closeModal();
-            });
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && !authModalOverlay.classList.contains('hidden')) {
-                    closeModal();
-                }
-            });
-            loginTab.addEventListener('click', () => switchTab('login'));
-            registerTab.addEventListener('click', () => switchTab('register'));
-            switchToRegisterBtn.addEventListener('click', () => switchTab('register'));
-            switchToLoginBtn.addEventListener('click', () => switchTab('login'));
-            // ==================================================
-            // || LOGIKA KOMUNIKASI NODE-RED                   ||
-            // ==================================================
-            uibuilder.start();
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                loginErrorDiv.classList.add('hidden');
-
-                const username = document.getElementById('loginUsername').value;
-                const password = document.getElementById('loginPassword').value;
-
-                uibuilder.send({
-                    'topic': 'login',
-                    'username': username,
-                    'password': password,
-                });
-            });
-            registerForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                registerErrorDiv.classList.add('hidden');
-
-                const username = document.getElementById('registerUsername').value;
-                const email = document.getElementById('registerEmail').value;
-                const password = document.getElementById('registerPassword').value;
-
-                uibuilder.send({
-                    'topic': 'register',
-                    'username': username,
-                    'email': email,
-                    'password': password,
-                });
-            });
-            uibuilder.onChange('msg', (newMsg) => {
-                const { topic, payload } = newMsg;
-
-                if (topic === 'login_response') {
-                    if (payload.status === 'success') {
-                        loginErrorDiv.textContent = payload.message;
-                        loginErrorDiv.classList.remove('hidden', 'text-red-400');
-                        loginErrorDiv.classList.add('text-green-700');
-                        if (payload.user) {
-                            localStorage.setItem('userData', JSON.stringify(payload.user));
-                        }
-
-                        setTimeout(() => {
-                            closeModal();
-                            updateNav();
-                        }, 1500);
-
-                    } else {
-                        loginErrorDiv.textContent = payload.message;
-                        loginErrorDiv.classList.remove('hidden');
-                        loginErrorDiv.classList.add('text-red-400');
-                    }
-                }
-
-                if (topic === 'register_response') {
-                    if (payload.status === 'success') {
-
-                        registerErrorDiv.textContent = payload.message;
-                        registerErrorDiv.classList.remove('hidden', 'text-red-400');
-                        registerErrorDiv.classList.add('text-green-700');
-
-                        if (payload.user) {
-                            localStorage.setItem('userData', JSON.stringify(payload.user));
-                        }
-
-                        setTimeout(() => {
-                            closeModal();
-                            updateNav();
-                        }, 2000);
-                    } else {
-                        registerErrorDiv.textContent = payload.message;
-                        registerErrorDiv.classList.remove('hidden');
-                        registerErrorDiv.classList.add('text-red-700');
-                    }
-                }
-            });
-            updateNav();
-            const profileDropdownBtn = document.getElementById('profileDropdownBtn');
-            const profileDropdown = document.getElementById('profileDropdown');
-
-            profileDropdownBtn?.addEventListener('click', (e) => {
-                e.stopPropagation();
-                profileDropdown?.classList.toggle('hidden');
-            });
-            document.addEventListener('click', (e) => {
-                if (!profileDropdown?.contains(e.target) && !profileDropdownBtn?.contains(e.target)) {
-                    profileDropdown?.classList.add('hidden');
-                }
-            });
+        loginNavBtn.addEventListener("click", () => openModal("login"));
+        closeAuthModalBtn.addEventListener("click", closeModal);
+        authModalOverlay.addEventListener("click", (event) => {
+          if (event.target === authModalOverlay) closeModal();
         });
+        document.addEventListener("keydown", (event) => {
+          if (
+            event.key === "Escape" &&
+            !authModalOverlay.classList.contains("hidden")
+          ) {
+            closeModal();
+          }
+        });
+        loginTab.addEventListener("click", () => switchTab("login"));
+        registerTab.addEventListener("click", () => switchTab("register"));
+        switchToRegisterBtn.addEventListener("click", () =>
+          switchTab("register")
+        );
+        switchToLoginBtn.addEventListener("click", () => switchTab("login"));
+        // ==================================================
+        // || LOGIKA KOMUNIKASI NODE-RED                   ||
+        // ==================================================
+        uibuilder.start();
+        loginForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          loginErrorDiv.classList.add("hidden");
+
+          const username = document.getElementById("loginUsername").value;
+          const password = document.getElementById("loginPassword").value;
+
+          uibuilder.send({
+            topic: "login",
+            username: username,
+            password: password,
+          });
+        });
+        registerForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          registerErrorDiv.classList.add("hidden");
+
+          const username = document.getElementById("registerUsername").value;
+          const email = document.getElementById("registerEmail").value;
+          const password = document.getElementById("registerPassword").value;
+
+          uibuilder.send({
+            topic: "register",
+            username: username,
+            email: email,
+            password: password,
+          });
+        });
+        uibuilder.onChange("msg", (newMsg) => {
+          // Ambil topic dan payload dari pesan yang masuk dari Node-RED
+          const { topic, payload } = newMsg;
+
+          // Blok untuk menangani respons login
+          if (topic === "login_response") {
+            if (payload.status === "success") {
+              // Tampilkan pesan sukses
+              loginErrorDiv.textContent = payload.message;
+              loginErrorDiv.classList.remove("hidden", "text-red-400");
+              loginErrorDiv.classList.add("text-green-700");
+
+              // Simpan data user ke localStorage jika ada
+              if (payload.user) {
+                localStorage.setItem("userData", JSON.stringify(payload.user));
+              }
+
+              // Tutup modal dan perbarui navigasi setelah 1.5 detik
+              setTimeout(() => {
+                closeModal();
+                updateNav();
+              }, 1500);
+            } else {
+              // Tampilkan pesan error jika login gagal
+              loginErrorDiv.textContent = payload.message;
+              loginErrorDiv.classList.remove("hidden");
+              loginErrorDiv.classList.add("text-red-400");
+            }
+          }
+
+          // Blok untuk menangani respons registrasi
+          if (topic === "register_response") {
+            if (payload.status === "success") {
+              // Tampilkan pesan sukses
+              registerErrorDiv.textContent = payload.message;
+              registerErrorDiv.classList.remove("hidden", "text-red-400");
+              registerErrorDiv.classList.add("text-green-700");
+
+              // Simpan data user ke localStorage jika ada
+              if (payload.user) {
+                localStorage.setItem("userData", JSON.stringify(payload.user));
+              }
+
+              // Tutup modal dan perbarui navigasi setelah 2 detik
+              setTimeout(() => {
+                closeModal();
+                updateNav();
+              }, 2000);
+            } else {
+              // Tampilkan pesan error jika registrasi gagal
+              registerErrorDiv.textContent = payload.message;
+              registerErrorDiv.classList.remove("hidden");
+              registerErrorDiv.classList.add("text-red-700");
+            }
+          }
+
+          // Blok untuk menangani dan menampilkan daftar kuis
+// Ganti blok 'if (topic === 'all_quizzes_response')' Anda dengan ini
+
+if (topic === 'all_quizzes_response') {
+const grid = document.getElementById('quiz-list-grid');
+const placeholder = document.getElementById('quiz-list-placeholder');
+grid.innerHTML = ''; // Kosongkan grid sebelum mengisi
+
+if (payload && payload.length > 0) {
+placeholder.style.display = 'none'; // Sembunyikan placeholder jika ada data
+payload.forEach(quiz => {
+// Template HTML untuk kartu kuis yang baru, mewah, dan interaktif
+const cardHTML = `
+<div
+  class="group flex flex-col h-full bg-slate-800/60 border border-slate-700 rounded-2xl shadow-lg overflow-hidden 
+                       transition-all duration-300 ease-in-out 
+                       hover:scale-105 hover:-translate-y-2 hover:border-sky-400 hover:shadow-2xl hover:shadow-sky-500/20">
+
+  <div class="p-6 flex-grow">
+    <h3 class="text-xl font-bold text-slate-100 mb-2">${quiz.quiz_name}</h3>
+    <p class="text-sm text-sky-300 mb-4">${quiz.category}</p>
+
+    <div class="flex items-center text-sm text-slate-400 border-t border-slate-700 pt-4 mt-4">
+      <svg class="w-5 h-5 mr-2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+        </path>
+      </svg>
+      <span>${quiz.num_questions || 'N/A'} Pertanyaan</span>
+    </div>
+  </div>
+
+  <div class="p-4 mt-auto bg-slate-900/50 border-t border-slate-700/80 grid grid-cols-2 gap-3">
+    <a href="quiz.html?id=${quiz.id}"
+      class="col-span-2 sm:col-span-1 text-center px-4 py-2.5 bg-sky-600 hover:bg-sky-500 text-white rounded-lg font-semibold transition-colors duration-300 text-sm shadow-md hover:shadow-lg shadow-sky-600/20">
+      Kerjakan Kuis
+    </a>
+    <a href="leaderboard.html?id=${quiz.id}"
+      class="col-span-2 sm:col-span-1 text-center px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-lg font-semibold transition-colors duration-300 text-sm">
+      Lihat Peringkat
+    </a>
+  </div>
+</div>
+`;
+grid.insertAdjacentHTML('beforeend', cardHTML);
+});
+} else {
+// Tampilkan pesan jika tidak ada kuis
+placeholder.innerHTML = '<span>Belum ada kuis yang tersedia.</span>';
+placeholder.style.display = 'block';
+}
+}
+        });
+        updateNav();
+        const profileDropdownBtn =
+          document.getElementById("profileDropdownBtn");
+        const profileDropdown = document.getElementById("profileDropdown");
+
+        profileDropdownBtn?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          profileDropdown?.classList.toggle("hidden");
+        });
+        document.addEventListener("click", (e) => {
+          if (
+            !profileDropdown?.contains(e.target) &&
+            !profileDropdownBtn?.contains(e.target)
+          ) {
+            profileDropdown?.classList.add("hidden");
+          }
+        });
+        getQuizzes();
+      });
     </script>
-
-</body>
-
+  </body>
 </html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="./index.css" media="all">
+    <title>Mengerjakan Kuis - SwiftQ</title>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white min-h-screen">
+
+    <div id="quiz-container" class="container mx-auto p-4 md:p-8 max-w-4xl">
+        <div id="quiz-content" class="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-6 md:p-10 shadow-2xl">
+            <h1 class="text-3xl font-bold text-center text-sky-300">Memuat Kuis...</h1>
+        </div>
+    </div>
+
+    <script src="../uibuilder/uibuilder.iife.min.js"></script>
+    <script>
+        const TIME_PER_QUESTION = 30; // Detik per soal
+        let quizQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let timerInterval;
+        const quizContentEl = document.getElementById('quiz-content');
+
+        function displayQuestion(index) {
+            const question = quizQuestions[index];
+            if (!question) return;
+
+            const savedAnswer = userAnswers[index];
+            let optionsHTML = '';
+            for (const key in question.answer_options) {
+                const isChecked = (key === savedAnswer) ? 'checked' : '';
+                optionsHTML += `
+                    <div>
+                        <input type="radio" name="answer" id="option_${key}" value="${key}" class="hidden peer" ${isChecked}>
+                        <label for="option_${key}" 
+                               class="flex items-start w-full p-4 text-left border border-slate-600 rounded-lg cursor-pointer transition-all duration-200 gap-x-4 
+                                      hover:bg-slate-700 hover:border-sky-600 
+                                      peer-checked:bg-sky-500 peer-checked:border-sky-400 peer-checked:text-white">
+                            <span class="font-bold text-sky-300 peer-checked:text-white">${key}.</span>
+                            <span class="flex-grow text-slate-300 peer-checked:text-white">${question.answer_options[key]}</span>
+                        </label>
+                    </div>
+                `;
+            }
+
+            const nextButtonText = (index === quizQuestions.length - 1) ? 'Lihat Hasil' : 'Soal Berikutnya';
+            const prevButtonDisabled = (index === 0) ? 'disabled' : '';
+
+            quizContentEl.innerHTML = `
+                <div class="flex justify-between items-center mb-6">
+                    <p class="text-sm text-slate-400">Soal ${index + 1} dari ${quizQuestions.length}</p>
+                    <div id="timer-display" class="px-3 py-1 bg-slate-700 rounded-md text-lg font-semibold text-white tracking-wider">--:--</div>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-semibold mt-2 text-slate-100">${question.question}</h2>
+                <div class="space-y-4 my-8">${optionsHTML}</div>
+                <div class="flex justify-between items-center mt-12">
+                    <button id="prev-btn" class="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-semibold transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed" ${prevButtonDisabled}>
+                        Soal Sebelumnya
+                    </button>
+                    <button id="next-btn" class="px-6 py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white rounded-xl font-semibold shadow-lg transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+                        ${nextButtonText}
+                    </button>
+                </div>
+            `;
+            
+            setupQuestionListeners();
+        }
+
+        function setupQuestionListeners() {
+            document.getElementById('prev-btn').addEventListener('click', handlePreviousQuestion);
+            document.getElementById('next-btn').addEventListener('click', handleNextQuestion);
+            const nextBtn = document.getElementById('next-btn');
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                if (radio.checked) nextBtn.disabled = false;
+                radio.addEventListener('change', () => nextBtn.disabled = false);
+            });
+        }
+        
+        function handlePreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                const selectedOption = document.querySelector('input[name="answer"]:checked');
+                if (selectedOption) userAnswers[currentQuestionIndex] = selectedOption.value;
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handleNextQuestion() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) userAnswers[currentQuestionIndex] = selectedOption.value;
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizQuestions.length) {
+                displayQuestion(currentQuestionIndex);
+            } else {
+                displayResults();
+            }
+        }
+
+        // --- FUNGSI SUBMIT & HASIL ---
+        function submitQuizResults(score) {
+            const userData = JSON.parse(localStorage.getItem('userData'));
+            const quizId = new URLSearchParams(window.location.search).get('id');
+            const startedAt = parseInt(localStorage.getItem('quizStartTime'), 10);
+            const finishedAt = Date.now();
+
+            if (!userData || !quizId || !startedAt) {
+                console.error("Gagal mengirim hasil: Data penting tidak ditemukan (user, quizId, atau waktu mulai).");
+                return;
+            }
+
+            const formattedAnswers = quizQuestions.map((question, index) => ({
+                question_text: question.question,
+                user_answer: userAnswers[index] || "Tidak dijawab",
+                correct_answer: question.correct_answer,
+                is_correct: userAnswers[index] === question.correct_answer
+            }));
+
+            const submissionData = {
+                user_id: userData.id,
+                user_name: userData.username,
+                quiz_id: quizId,
+                score: score,
+                answers: formattedAnswers,
+                started_at: startedAt,
+                finished_at: finishedAt,
+                duration_seconds: Math.round((finishedAt - startedAt) / 1000)
+            };
+
+            console.log("Mengirim data hasil kuis ke Node-RED:", submissionData);
+            uibuilder.send({
+                'topic': 'submit_quiz_results',
+                'payload': submissionData
+            });
+        }
+
+function displayResults() {
+    let score = 0;
+    userAnswers.forEach((answer, index) => {
+        if (answer === quizQuestions[index].correct_answer) {
+            score++;
+        }
+    });
+
+    // [PERBAIKAN] Panggil fungsi untuk mengirim data SEBELUM data di Local Storage dihapus.
+    submitQuizResults(score);
+
+    // [DIPINDAHKAN] Hentikan dan bersihkan timer serta Local Storage SETELAH data dikirim.
+    clearInterval(timerInterval);
+    localStorage.removeItem('quizEndTime');
+    localStorage.removeItem('quizId');
+    localStorage.removeItem('quizStartTime'); 
+    
+    // --- Sisa kode untuk menampilkan HTML tidak berubah ---
+    let resultsHTML = '';
+    quizQuestions.forEach((question, index) => {
+        const userAnswer = userAnswers[index];
+        const isCorrect = userAnswer === question.correct_answer;
+        const resultColorClass = isCorrect ? 'border-green-500/50 bg-green-500/10' : 'border-red-500/50 bg-red-500/10';
+        const answerColorClass = isCorrect ? 'text-green-300' : 'text-red-300';
+        resultsHTML += `
+            <div class="p-5 border ${resultColorClass} rounded-lg mb-6">
+                <p class="font-semibold text-lg text-slate-200">${index + 1}. ${question.question}</p>
+                <p class="mt-3 text-sm ${answerColorClass}">Jawaban Anda: <strong>${userAnswer ? `${userAnswer}. ${question.answer_options[userAnswer]}` : 'Tidak dijawab'}</strong></p>
+                <p class="mt-1 text-sm text-green-300">Jawaban Benar: <strong>${question.correct_answer}. ${question.answer_options[question.correct_answer]}</strong></p>
+                <div class="mt-3 pt-3 border-t border-slate-600/50 text-sm text-slate-400"><strong>Penjelasan:</strong> ${question.explanation}</div>
+            </div>`;
+    });
+    quizContentEl.innerHTML = `
+        <h1 class="text-3xl font-bold text-center text-sky-300 mb-2">Hasil Kuis Selesai!</h1>
+        <p class="text-center text-slate-400 mb-8">Hasil Anda telah disimpan.</p>
+        <p class="text-center text-slate-300 text-xl mb-8">Skor Anda: <span class="font-bold text-white text-2xl">${score}</span> dari ${quizQuestions.length}</p>
+        <div>${resultsHTML}</div>
+        <div class="text-center mt-8"><a href="index.html" class="px-8 py-3 bg-gradient-to-r from-sky-500 to-blue-600 hover:from-sky-400 hover:to-blue-500 text-white rounded-xl font-semibold shadow-lg">Kembali ke Halaman Utama</a></div>`;
+}
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const endTime = parseInt(localStorage.getItem('quizEndTime'), 10);
+                if (!endTime) {
+                    clearInterval(timerInterval);
+                    return;
+                }
+                const remainingTime = endTime - Date.now();
+                const timerDisplay = document.getElementById('timer-display');
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    if (timerDisplay) timerDisplay.textContent = "00:00";
+                    autoSubmitQuiz();
+                } else {
+                    const minutes = Math.floor((remainingTime / 1000 / 60) % 60);
+                    const seconds = Math.floor((remainingTime / 1000) % 60);
+                    if (timerDisplay) timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }, 1000);
+        }
+
+        function autoSubmitQuiz() {
+            alert("Waktu habis! Kuis akan disubmit secara otomatis.");
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) userAnswers[currentQuestionIndex] = selectedOption.value;
+            displayResults();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            uibuilder.start();
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentQuizId = urlParams.get('id');
+            const storedQuizId = localStorage.getItem('quizId');
+            if (!currentQuizId) {
+                quizContentEl.innerHTML = '<h1 class="text-3xl font-bold text-center text-red-400">Error: ID Kuis tidak ditemukan!</h1>';
+                return;
+            }
+            if (storedQuizId && storedQuizId !== currentQuizId) {
+                localStorage.removeItem('quizEndTime');
+                localStorage.removeItem('quizId');
+                localStorage.removeItem('quizStartTime');
+            }
+            uibuilder.send({ 'topic': 'get_quiz_by_id', 'payload': { 'id': currentQuizId } });
+            uibuilder.onChange('msg', (newMsg) => {
+                if (newMsg.topic === 'quiz_data_response') {
+                    if (newMsg.payload && newMsg.payload.length > 0) {
+                        quizQuestions = newMsg.payload;
+                        userAnswers = new Array(quizQuestions.length).fill(null);
+                        if (!localStorage.getItem('quizEndTime')) {
+                            const totalDuration = quizQuestions.length * TIME_PER_QUESTION * 1000;
+                            const endTime = Date.now() + totalDuration;
+                            localStorage.setItem('quizEndTime', endTime);
+                            localStorage.setItem('quizId', currentQuizId);
+                            localStorage.setItem('quizStartTime', Date.now());
+                        }
+                        startTimer();
+                        displayQuestion(currentQuestionIndex);
+                    } else {
+                        quizContentEl.innerHTML = '<h1 class="text-3xl font-bold text-center text-red-400">Error: Gagal memuat data soal kuis.</h1>';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

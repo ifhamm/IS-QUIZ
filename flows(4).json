@@ -1,0 +1,33 @@
+[
+    {
+        "id": "0a8e110b3e616140",
+        "type": "uibuilder",
+        "z": "226d034ba02adc67",
+        "name": "",
+        "topic": "",
+        "url": "IS-QUIZ",
+        "okToGo": true,
+        "fwdInMessages": false,
+        "allowScripts": false,
+        "allowStyles": false,
+        "copyIndex": true,
+        "templateFolder": "blank",
+        "extTemplate": "",
+        "showfolder": false,
+        "reload": false,
+        "sourceFolder": "src",
+        "deployedVersion": "7.4.1",
+        "showMsgUib": false,
+        "title": "",
+        "descr": "",
+        "editurl": "vscode://file/home/arm/.node-red/uibuilder/IS-QUIZ/?windowId=_blank",
+        "x": 290,
+        "y": 540,
+        "wires": [
+            [
+                "9338fb3e8aaa3524"
+            ],
+            []
+        ]
+    }
+]
