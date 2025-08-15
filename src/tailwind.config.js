@@ -1,6 +1,13 @@
 module.exports = {
     darkMode: 'class',
-    content: ['./index.html'],
+    content: ['./*.html'],
+    safelist: [
+        'text-slate-500',
+        'pointer-events-none',
+        'text-slate-300',
+        'hover:text-sky-400',
+        'md:inline-block'
+    ],
     theme: {
         extend: {
             animation: {

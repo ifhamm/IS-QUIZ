@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Latihan Wawancara Interaktif</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark background */
+            color: #E5E7EB;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #1F2937;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 640px;
+            text-align: center;
+            border: 1px solid #374151;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 1.5rem;
+            color: #fff;
+            background: linear-gradient(90deg, #38BDF8, #6366F1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #camera {
+            width: 100%;
+            height: auto;
+            border-radius: 1rem;
+            transform: scaleX(-1); /* Efek mirror */
+            background-color: #374151;
+            border: 2px solid #4B5563;
+        }
+
+        #question-container {
+            background-color: #374151;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            min-height: 50px;
+        }
+
+        #question {
+            font-size: 1.2em;
+            color: #D1D5DB;
+        }
+
+        #timer {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #F87171; /* Red timer */
+            margin: 1rem 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1em;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        #startBtn { background-color: #EF4444; }
+        #startBtn:hover:not(:disabled) { background-color: #DC2626; }
+
+        #stopBtn { background-color: #3B82F6; }
+        #stopBtn:hover:not(:disabled) { background-color: #2563EB; }
+
+        #downloadBtn {
+            background-color: #10B981;
+            text-decoration: none; /* For <a> tag */
+        }
+        #downloadBtn:hover:not(.disabled) { background-color: #059669; }
+        #downloadBtn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Latihan Wawancara</h2>
+    <video id="camera" autoplay muted></video>
+    <div id="question-container">
+        <div id="question">Klik "Mulai Rekam" untuk memulai</div>
+    </div>
+    <div id="timer">01:00</div>
+    <div class="controls">
+        <button id="startBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm0 10c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z"/></svg>
+            Mulai Rekam
+        </button>
+        <button id="stopBtn" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M2 2h20v20h-20z"/></svg>
+            Berhenti
+        </button>
+        <a id="downloadBtn" class="disabled" href="#">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11h5l-9 10-9-10h5v-11h8v11zm3 8v3h-14v-3h-2v5h18v-5h-2z"/></svg>
+            Unduh Video
+        </a>
+    </div>
+</div>
+
+<script>
+    const video = document.getElementById('camera');
+    const timerDisplay = document.getElementById('timer');
+    const questionDisplay = document.getElementById('question');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    const questions = [
+      "Ceritakan tentang dirimu",
+      "Apa kekuatan dan kelemahanmu?",
+      "Kenapa kamu ingin bekerja di sini?",
+      "Ceritakan pengalaman paling menantang dalam pekerjaanmu sebelumnya.",
+      "Di mana kamu melihat dirimu 5 tahun dari sekarang?"
+    ];
+    let questionIndex = 0;
+    let countdown;
+    
+    // Variabel untuk merekam video
+    let mediaRecorder;
+    let recordedChunks = [];
+    let stream;
+
+    // Fungsi untuk menyalakan kamera
+    async function startCamera() {
+        if (stream) return; // Jika kamera sudah nyala, jangan ulangi
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            video.srcObject = stream;
+        } catch (error) {
+            console.error("Error accessing camera:", error);
+            questionDisplay.textContent = "Error: Gagal mengakses kamera. Mohon izinkan akses.";
+        }
+    }
+
+    // Fungsi untuk memulai sesi wawancara (pertanyaan & timer)
+    function startInterview() {
+      questionDisplay.textContent = "Pertanyaan: " + questions[questionIndex];
+      let timeLeft = 60; // 60 detik per pertanyaan
+      timerDisplay.textContent = `01:00`;
+      
+      countdown = setInterval(() => {
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          questionIndex = (questionIndex + 1) % questions.length;
+          alert("Waktu habis! Lanjut ke pertanyaan berikutnya.");
+          startInterview();
+        }
+      }, 1000);
+    }
+    
+    // --- Event Listeners untuk Tombol ---
+
+    // Tombol Mulai Rekam
+    startBtn.addEventListener('click', async () => {
+        await startCamera(); // Pastikan kamera sudah siap
+        if (!stream) return; // Hentikan jika kamera gagal diakses
+
+        recordedChunks = []; // Kosongkan rekaman sebelumnya
+        mediaRecorder = new MediaRecorder(stream);
+
+        mediaRecorder.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+                recordedChunks.push(event.data);
+            }
+        };
+
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            downloadBtn.href = url;
+            downloadBtn.download = `latihan-wawancara-${new Date().getTime()}.webm`;
+            downloadBtn.classList.remove('disabled');
+        };
+
+        mediaRecorder.start();
+        startInterview();
+
+        // Update UI
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        downloadBtn.classList.add('disabled');
+        downloadBtn.href = '#';
+    });
+
+    // Tombol Berhenti
+    stopBtn.addEventListener('click', () => {
+        mediaRecorder.stop();
+        stream.getTracks().forEach(track => track.stop()); // Matikan kamera & mic
+        stream = null; // Reset stream
+        clearInterval(countdown); // Hentikan timer
+
+        // Update UI
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        questionDisplay.textContent = "Rekaman selesai. Klik 'Unduh Video' untuk menyimpan.";
+    });
+
+    // Panggil startCamera saat halaman dimuat untuk meminta izin lebih awal
+    startCamera();
+
+</script>
+
+</body>
+</html>

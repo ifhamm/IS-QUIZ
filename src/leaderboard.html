@@ -11,13 +11,23 @@
     <header class="absolute top-0 left-0 right-0 z-20">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-bold bg-gradient-to-r from-sky-400 to-blue-500 bg-clip-text text-transparent">SwiftQ</a>
-            <div><a href="index.html" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold py-2 px-5 rounded-lg transition-colors duration-300">Kembali</a></div>
+            <div>
+                <a href="index.html"
+                    class="flex items-center gap-2 bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white font-semibold py-2 px-5 rounded-lg shadow-lg transition-all duration-300">
+                    <!-- <i class="fas fa-arrow-left"></i> -->
+                    Kembali
+                </a>
+            </div>
         </nav>
     </header>
 
     <main class="relative z-10 flex items-center justify-center min-h-screen p-4 pt-24">
         <div class="w-full max-w-4xl mx-auto text-center">
-            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">Papan Peringkat</h1>
+        <h1 class="text-4xl md:text-5xl font-bold leading-[1.4] mb-6 pb-1">
+            <span class="bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent">
+                Leaderboard
+            </span>
+        </h1>
             <div id="leaderboard-container" class="mt-10 bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl shadow-2xl p-6 md:p-8">
                 <p id="leaderboard-placeholder" class="text-slate-400">Sedang memuat data...</p>
             </div>
@@ -49,54 +59,84 @@
                 'payload': { 'id': quizId }
             });
 
-            uibuilder.onChange('msg', (newMsg) => {
+uibuilder.onChange('msg', (newMsg) => {
                 if (newMsg.topic === 'leaderboard_data') {
                     const leaderboardContainer = document.getElementById('leaderboard-container');
                     const placeholder = document.getElementById('leaderboard-placeholder');
                     let data = newMsg.payload.data;
 
                     if (data && data.length > 0) {
-                        data.sort((a, b) => {
-                            if (a.score !== b.score) return b.score - a.score;
-                            return a.duration_seconds - b.duration_seconds;
+                        
+                        // Langkah 1: Gunakan Map untuk menemukan entri terbaik untuk setiap pengguna dari semua percobaan.
+                        const bestEntriesMap = new Map();
+
+                        for (const currentEntry of data) {
+                            // Pastikan score adalah angka untuk perbandingan yang benar
+                            currentEntry.score = Number(currentEntry.score); 
+                            
+                            const existingEntry = bestEntriesMap.get(currentEntry.user_name);
+
+                            // Jika pengguna belum ada di map, ATAU jika skor entri saat ini LEBIH BAIK dari yang sudah ada
+                            if (!existingEntry || currentEntry.score > existingEntry.score) {
+                                bestEntriesMap.set(currentEntry.user_name, currentEntry);
+                            } 
+                            // JIKA SKORNYA SAMA, cek durasi waktunya. Waktu yang lebih singkat lebih baik.
+                            else if (currentEntry.score === existingEntry.score && currentEntry.duration_seconds < existingEntry.duration_seconds) {
+                                bestEntriesMap.set(currentEntry.user_name, currentEntry);
+                            }
+                        }
+
+                        // Langkah 2: Ubah Map yang berisi skor-skor terbaik menjadi sebuah array.
+                        const uniqueEntries = Array.from(bestEntriesMap.values());
+
+                        // Langkah 3: Sortir array hasil akhir untuk menentukan peringkat di papan peringkat.
+                        uniqueEntries.sort((a, b) => {
+                            if (a.score !== b.score) return b.score - a.score; // Skor tertinggi lebih dulu
+                            return a.duration_seconds - b.duration_seconds; // Waktu tercepat lebih dulu
                         });
 
-                        let tableHTML = `
-                            <table class="w-full text-left">
-                                <thead>
-                                    <tr class="border-b border-slate-600">
-                                        <th class="p-4 w-16 text-slate-400">#</th>
-                                        <th class="p-4 text-slate-400">Nama Pengguna</th>
-                                        <th class="p-4 text-center text-slate-400">Skor</th>
-                                        <th class="p-4 text-center text-slate-400">Waktu</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                        `;
+                        // Cek lagi jika setelah difilter masih ada data untuk ditampilkan
+                        if (uniqueEntries.length > 0) {
+                            let tableHTML = `
+                                <table class="w-full text-left">
+                                    <thead>
+                                        <tr class="border-b border-slate-600">
+                                            <th class="p-4 w-16 text-slate-400 text-center">#</th>
+                                            <th class="p-4 text-slate-400">Nama Pengguna</th>
+                                            <th class="p-4 text-center text-slate-400">Skor</th>
+                                            <th class="p-4 text-center text-slate-400">Waktu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                            `;
 
-                        data.forEach((entry, index) => {
-                            const rank = index + 1;
-                            let rankDisplay = rank;
-                            if (rank === 1) rankDisplay = '🥇';
-                            if (rank === 2) rankDisplay = '🥈';
-                            if (rank === 3) rankDisplay = '🥉';
+                            // Langkah 4: Bangun tabel menggunakan data yang sudah unik dan tersortir.
+                            uniqueEntries.forEach((entry, index) => {
+                                const rank = index + 1;
+                                let rankDisplay = rank;
+                                if (rank === 1) rankDisplay = '🥇';
+                                if (rank === 2) rankDisplay = '🥈';
+                                if (rank === 3) rankDisplay = '🥉';
+
+                                tableHTML += `
+                                    <tr class="border-b border-slate-700/50 hover:bg-slate-700/30">
+                                        <td class="p-4 w-16 text-xl font-bold text-center">${rankDisplay}</td>
+                                        <td class="p-4 font-semibold text-slate-200">${entry.user_name}</td>
+                                        <td class="p-4 text-center font-bold bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-600 bg-clip-text text-transparent text-lg">${entry.score}</td>
+                                        <td class="p-4 text-center text-slate-300">${formatDuration(entry.duration_seconds)}</td>
+                                    </tr>
+                                `;
+                            });
 
                             tableHTML += `
-                                <tr class="border-b border-slate-700/50 hover:bg-slate-700/30">
-                                    <td class="p-4 w-16 text-xl font-bold text-center">${rankDisplay}</td>
-                                    <td class="p-4 font-semibold text-slate-200">${entry.user_name}</td>
-                                    <td class="p-4 text-center font-bold text-sky-300 text-lg">${entry.score}</td>
-                                    <td class="p-4 text-center text-slate-300">${formatDuration(entry.duration_seconds)}</td>
-                                </tr>
+                                    </tbody>
+                                </table>
                             `;
-                        });
-
-                        tableHTML += `
-                                </tbody>
-                            </table>
-                        `;
-                        
-                        leaderboardContainer.innerHTML = tableHTML;
+                            
+                            leaderboardContainer.innerHTML = tableHTML;
+                        } else {
+                             placeholder.textContent = 'Belum ada data untuk ditampilkan di papan peringkat.';
+                        }
                     } else {
                         placeholder.textContent = 'Belum ada data untuk ditampilkan di papan peringkat.';
                     }
